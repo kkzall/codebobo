@@ -59,6 +59,9 @@ public class Array<E> {
             throw new IllegalArgumentException("Get failed. Index is illegal");
         return data[index];
     }
+    E getFirst(){
+        return get(0);
+    }
 
 
     //修改index位置的索引元素为e
