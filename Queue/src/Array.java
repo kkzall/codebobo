@@ -30,11 +30,12 @@ public class Array<E> {
 
     //在指定位置添加元素
     public void add(int index, E e) {
-        if (size == data.length)
-            throw new IllegalArgumentException("add failed.Array is full.");
-
         if (index < 0 || index > size)
             throw new IllegalArgumentException("add failed.Array is full.");
+        if (size == data.length)
+            resize(2 * data.length);
+
+
 
         for (int i = size - 1 ; i >= index ; i--)
             data[i + 1] = data[i];
@@ -123,6 +124,12 @@ public class Array<E> {
         }
         res.append("]");
         return res.toString();
+    }
+    private void resize(int newCapacity){
+        E[] newData = (E[])new Object[newCapacity];
+        for (int i = 0 ; i < size ; i ++)
+            newData[i] = data[i];
+        data = newData;
     }
 }
 
