@@ -1,3 +1,5 @@
+import com.sun.org.apache.regexp.internal.RE;
+
 public class LiskedList<E> {
     private class Node {
         private E e;
@@ -22,11 +24,11 @@ public class LiskedList<E> {
         }
     }
 
-    private Node head;
+    private Node dummyHead;
     private int size;
 
     public LiskedList() {
-        head = null;
+        dummyHead = new Node(null,null);
         size = 0;
     }
 
@@ -39,33 +41,101 @@ public class LiskedList<E> {
     public boolean isEmpty() {
         return size == 0;
     }
-    //在链表头添加元素e
-    public void addFirst(E e){
-    //    Node node = new Node(e);
-    //    node.next = head;
-    //    head = node;
-    head = new Node(e,head);
-    size ++;
 
-    }
     //在链表的index（0-based）位置添加新的元素e
     //在链表中不是一个常用的操作，练习用；）
     public void add(int index,E e){
         if (index < 0 || index > size)
             throw new IllegalArgumentException("Add faild.Illegal index.");
-        if (index == 0)
-            addFirst(e);
-        else {
-            Node prev = head;
-            for (int i = 0; i < index - 1; i++)
-                prev = prev.next;
-            prev.next = new Node(e, prev.next);
-            size++;
+
+        Node prev = dummyHead;
+        for (int i = 0; i < index ; i++)
+            prev = prev.next;
+        prev.next = new Node(e, prev.next);
+        size++;
         }
-    }
+
     //在链表末尾添加元素
     public void addLast(E e){
         add(size,e);
+    }
+    //在链表头添加元素e
+    public void addFirst(E e){
+        add(0,e);
+    }
+    //获得链表的index（0-based）位置的元素e
+    //在链表中不是一个常用的操作，练习用；）
+    public E get(int index){
+        if (index < 0 || index > size)
+            throw new IllegalArgumentException("Get faild.Illegal index.");
+        Node cur = dummyHead.next;
+        for (int i = 0 ; i < index ; i ++)
+            cur = cur.next;
+        return cur.e;
+    }
+    //获得链表的第一个元素
+    public E getFirst(){
+        return get(0);
+    }
+    //获得链表的最后一个元素
+    public E getLast(){
+        return get(size - 1);
+    }
+    //求改链表的index（0-based）位置的元素为e
+    //在链表中不是一个常用的操作，练习用；）
+    public void set(int index , E e){
+        if (index < 0 || index > size)
+            throw new IllegalArgumentException("Get faild.Illegal index.");
+        Node cur = dummyHead.next;
+        for (int i = 0 ; i < index ; i ++)
+            cur = cur.next;
+        cur.e = e;
+    }
+    //查找链表中是否有元素e
+    public boolean contains(E e){
+        Node cur = dummyHead.next;
+        while (cur != null){
+            if (cur.e.equals(e))
+                return true;
+            cur = cur.next;
+        }
+        return false;
+    }
+    //删除链表的index（0-based）位置的元素e，并返回
+    //在链表中不是一个常用的操作，练习用；）
+    public E remove(int index){
+        if (index < 0 || index > size)
+            throw new IllegalArgumentException("Remove faild.Illegal index.");
+        Node prev = dummyHead;
+        for (int i = 0 ; i < index ; i ++)
+            prev = prev.next;
+        Node reNote = prev.next;
+        prev.next = reNote.next;
+        reNote.next = null;
+        size --;
+        return reNote.e;
+
+    }
+    //删除链表头的元素e
+    public E removeFirst(){
+        return remove(0);
+    }
+    //删除链尾的元素e
+    public E removeLast(){
+        return remove(size - 1 );
+    }
+
+        @Override
+    public String toString(){
+        StringBuilder res = new StringBuilder();
+        Node cur = dummyHead.next;
+        while(cur != null){
+            res.append(cur + "→");
+            cur = cur.next;
+
+        }
+        res.append("NULL");
+       return res.toString();
     }
 }
 
